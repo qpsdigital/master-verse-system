@@ -1,140 +1,125 @@
 ==================================================
 ENGINE INDEX — MASTER ENTRY POINT
-ENGINE: MASTER VERSE SYSTEM
+ENGINE: Master Verse System
 VERSION: v4.6
 STATUS: ACTIVE
 ==================================================
 
 PURPOSE
-• This file is the SINGLE authoritative entry point for the engine.
-• All execution, validation, and exports MUST begin here.
-• No other file may be referenced directly without being listed here.
-• This file contains NO data and NO execution logic — references only.
+- This file is the single authoritative entry point for the engine.
+- All execution, validation, and export behavior begins here.
+- This file contains NO verse data and NO procedural logic — references only.
+- If something is not listed here, it does not exist to the engine.
 
 ==================================================
 1) VERSION GOVERNANCE (LOCKED)
 ==================================================
+- Versions are LINEAR (no branching).
+- Only ONE ACTIVE version may exist at a time.
 
-• Versions are LINEAR.
-• Only ONE ACTIVE version may exist at a time.
+STATUS
+- v3.9 → SEALED / READ-ONLY (historical baseline)
+- v4.6 → ACTIVE / EVOLVING
 
-STATUS:
-• v3.9 → SEALED / READ-ONLY
-• v4.6 → ACTIVE / EVOLVING
-
-SEALED RULE:
-• SEALED versions may NOT receive:
-  - fixes
-  - overrides
-  - extensions
-• SEALED versions exist ONLY for audit and determinism.
+SEALED RULE
+- SEALED versions may NOT receive fixes, overrides, or extensions.
+- SEALED versions exist only for audit + determinism.
 
 ==================================================
-2) FILE VERSIONING RULE (LOCKED)
+2) FILE VERSIONING & REPLACEMENT (LOCKED)
 ==================================================
+- Filenames NEVER include version numbers.
+- VERSIONING lives inside each file header only.
+- When a file changes, you REPLACE the file (same path).
+- Git history is the only record of prior versions.
 
-• File names NEVER include version numbers.
-• Versioning lives INSIDE each file header only.
+VALID
+- ENGINE_INDEX.md
 
-✔ engine_index.md
-✘ engine_index_v4.6.md
-
-• When a file changes:
-  - The file is REPLACED
-  - Git history is the only record of change
+INVALID
+- ENGINE_INDEX_v4.6.md
 
 ==================================================
-3) REPOSITORY ISOLATION (CRITICAL)
+3) ENGINE ISOLATION (CRITICAL)
 ==================================================
-
-• This engine lives in its OWN repository.
-• Engines NEVER share:
+- This engine lives in its OWN repository.
+- Engines never share:
   - data
   - rules
   - templates
   - execution logic
-
-• No cross-engine imports are allowed.
+- No cross-engine imports are allowed.
 
 ==================================================
-4) FOLDER ROLE GOVERNANCE (LOCKED)
+4) FOLDER ROLES (LOCKED)
 ==================================================
+- /data/      → canonical truth only (NO logic)
+- /rules/     → enforcement + execution rules (NO verse data)
+- /templates/ → execution copy formats + error catalog (NO logic)
 
-Each folder has ONE role and may NEVER absorb another.
-
-• /data/      → canonical truth only (NO logic)
-• /rules/     → execution + enforcement logic (NO data)
-• /templates/ → execution copy formats + errors
-
-If a file grows too large:
-• SPLIT by role
-• NEVER merge roles to reduce file count
+If something grows too large:
+- SPLIT within the same role
+- NEVER merge roles to reduce file count
 
 ==================================================
 5) CANONICAL FILE MAP (LOCKED)
 ==================================================
 
 ENTRY POINT
-• ./engine_index.md
+- ./ENGINE_INDEX.md
 
 --------------------------------
 MASTER DATA (CANONICAL TRUTH)
 --------------------------------
+BASELINE (SEALED v3.9)
+- ./data/master_verse_table/v3_9/verses_01_10.md
+- ./data/master_verse_table/v3_9/verses_11_20.md
+- ./data/master_verse_table/v3_9/verses_21_30.md
 
-BASELINE (SEALED):
-• ./data/master_verse_table/v3_9/verses_01_10.md
-• ./data/master_verse_table/v3_9/verses_11_20.md
-• ./data/master_verse_table/v3_9/verses_21_30.md
-
-ACTIVE OVERRIDES (ONLY IF PRESENT):
-• ./data/master_verse_table/v4_0/verses_11_20.md
-
---------------------------------
-RULES / LOGIC
---------------------------------
-
-• ./rules/execution_engine.md
-• ./rules/execution_context.md
-• ./rules/execution_triggers.md
-• ./rules/approve_export_commands.md
-• ./rules/design_locked_01_06.md
-• ./rules/design_creative_07_10.md
-• ./rules/design_7_vs_8_separation.md
-• ./rules/locked_design_checksum.md
+ACTIVE OVERRIDES (v4.x) — ONLY IF PRESENT
+- ./data/master_verse_table/v4_0/verses_11_20.md
 
 --------------------------------
-TEMPLATES
+RULES / LOGIC (ENFORCEMENT)
 --------------------------------
+- ./rules/execution_engine.md
+- ./rules/execution_context.md
+- ./rules/execution_triggers.md
+- ./rules/approve_export_commands.md
+- ./rules/design_locked_01_06.md
+- ./rules/design_creative_07_10.md
+- ./rules/design_7_vs_8_separation.md
+- ./rules/locked_design_checksum.md
 
-• ./templates/execution_copy_template.md
-• ./templates/error_codes.md
+--------------------------------
+TEMPLATES (OUTPUT CONTRACTS)
+--------------------------------
+- ./templates/execution_copy_template.md
+- ./templates/error_codes.md
 
 ==================================================
 6) LOAD ORDER & PRECEDENCE (LOCKED)
 ==================================================
-
-ENGINE LOAD SEQUENCE (MANDATORY):
-
-1) Read engine_index.md
-2) Load v3.9 master data
-3) Apply ACTIVE override data (v4.x), if present
+ENGINE LOAD SEQUENCE (MANDATORY)
+1) Read ENGINE_INDEX.md
+2) Load v3.9 master data (sealed baseline)
+3) Apply active override data (v4.x), IF present
 4) Load rules
 5) Load templates
 
-PRECEDENCE RULES:
-• Data overrides data only
-• Rules NEVER override verse text
-• Templates NEVER alter logic
-• If no override exists → v3.9 remains canonical
+PRECEDENCE RULES
+- Data overrides data only (v4.x may override v3.9 data where explicitly defined).
+- Rules NEVER override verse text.
+- Templates NEVER alter logic.
+- If no override exists, v3.9 remains canonical.
 
 ==================================================
 7) EXECUTION TRUST MODEL (ABSOLUTE)
 ==================================================
-
-• Engine trusts ONLY files present in this repository.
-• No conversational memory.
-• No inferred context.
-• No implied defaults.
+- Engine trusts ONLY files present in this repository.
+- No conversational memory.
+- No inferred context.
+- No implied defaults.
 
 If ANY referenced file is missing:
 → EXECUTION MUST FAIL — MISSING_CANONICAL_FILE
@@ -142,30 +127,27 @@ If ANY referenced file is missing:
 ==================================================
 8) CHANGE DISCIPLINE (LOCKED)
 ==================================================
-
 Every file change MUST declare:
-• VERSION
-• CHANGE TYPE (ADDITIVE / OVERRIDE / EXTENSION)
-• SCOPE (GLOBAL or TARGETED)
+- VERSION
+- CHANGE TYPE (ADDITIVE / OVERRIDE / EXTENSION)
+- SCOPE (GLOBAL or TARGETED)
 
 Unlabeled changes are INVALID.
 
 ==================================================
 9) SCALE & SIZE SAFETY
 ==================================================
-
-• If a data file exceeds practical copy/export limits:
-  - Split into numbered siblings:
-    e.g. MASTER_TABLE_01.md, MASTER_TABLE_02.md
-• engine_index.md MUST reference ALL parts explicitly.
+If a data file exceeds practical copy/export limits:
+- Split into numbered siblings, e.g.:
+  ./data/master_verse_table/v3_9/verses_01_10__part_1.md
+  ./data/master_verse_table/v3_9/verses_01_10__part_2.md
+- ENGINE_INDEX.md must reference ALL parts explicitly.
 
 ==================================================
 10) FINAL AUTHORITY RULE
 ==================================================
-
-• engine_index.md is the ONLY public entry point.
-• If something is not listed here:
-  → It does NOT exist to the engine.
+- ENGINE_INDEX.md is the only public entry point.
+- If it’s not listed here, it does not exist to the engine.
 
 ==================================================
 END ENGINE INDEX — MASTER ENTRY POINT
